@@ -30,6 +30,12 @@ gcloud compute ssh carlavm
 ```
 create carla container
 ```
-docker run -p 8000-8002:8000-8002 --name=carla --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=0 carlasim/carla:latest bash -c "SDL_VIDEODRIVER=offscreen ./CarlaUE4.sh -opengl -nosound -carla-rpc-port=8000"
+docker run -d -p 8000-8002:8000-8002 --name=carla --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=0 carlasim/carla:latest bash -c "SDL_VIDEODRIVER=offscreen ./CarlaUE4.sh -opengl -nosound -carla-rpc-port=8000"
 ```
 _it will take another 10 minutes to get the container up_
+
+## delete gcp isntance after use
+gcloud compute instances delete carlavm
+
+## client side
+use --host <gcp_instance> --port 8000 params
