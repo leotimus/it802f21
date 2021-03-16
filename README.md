@@ -1,5 +1,8 @@
 # it802f21
-Open firewall ports 8000-8010 in GCP and name (*tag*) it `carlavm`
+* Get GCP 300$ free credit
+* Create a project
+* Get gcloud cli works (suggest default zone *--zone=europe-west4-a*)
+* Open GCP firewall ports 8000-8010 in GCP and name (*tag*) it `carlavm`
 
 ## create instance
 ```
