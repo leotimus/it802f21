@@ -1,41 +1,48 @@
 # it802f21
 * Get GCP 300$ free credit
 * Create a project
+* Get GPU quotas
 * Get gcloud cli works (suggest default zone *--zone=europe-west4-a*)
-* Open GCP firewall ports 8000-8010 in GCP and name (*tag*) it `carlavm`
 
 ## create instance
 ```
-gcloud compute instances create carlavm --maintenance-policy=TERMINATE --machine-type=n1-standard-8 \
---accelerator="type=nvidia-tesla-p100-vws,count=1" --image=ubuntu-1804-bionic-v20210315a --image-project=ubuntu-os-cloud \
---boot-disk-size=50GB --boot-disk-type=pd-balanced --boot-disk-device-name=instance-1 --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring \
---reservation-affinity=any --tags=carlavm --preemptible
+gcloud compute instances create carlavm --machine-type=n1-standard-8 --maintenance-policy=TERMINATE \
+--accelerator=type=nvidia-tesla-p100-vws,count=1 --image=ubuntu-1804-bionic-v20210325 --image-project=ubuntu-os-cloud \
+--boot-disk-size=10GB --boot-disk-type=pd-ssd --boot-disk-device-name=carlavm --create-disk source-snapshot=carla-disk,name=carla-drive,size=20,type=projects/ml-study-293709/zones/europe-west4-a/diskTypes/pd-ssd \
+--no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any --tags=carlavm --preemptible
 ```
 
 ## setup
-login again
+login
 ```
 gcloud compute ssh carlavm
 ```
+change password
+```
+sudo passwd $USER
+```
 setup basic reqs
 ```
-sudo curl https://raw.githubusercontent.com/leotimus/it802f21/main/carla.sh | bash
+sudo curl https://raw.githubusercontent.com/leotimus/it802f21/carla_01/carla.sh | bash
 ```
-_it will take about 15 minutes for each setup_
+_it will take about 10 minutes for each setup_
 
 ## create carla instance
 login again
 ```
-gcloud compute ssh carlavm
+gcloud compute ssh carlavm -- -L 4000:localhost:4000
 ```
-create carla container
+mount disk before use
 ```
-docker run -d -p 8000-8002:8000-8002 --name=carla --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=0 carlasim/carla:latest bash -c "SDL_VIDEODRIVER=offscreen ./CarlaUE4.sh -opengl -nosound -carla-rpc-port=8000"
+sudo mount -o discard,defaults /dev/sdb /home/$USER/carla
 ```
-_it will take another 10 minutes to get the container up_
 
 ## delete gcp isntance after use
+```
 gcloud compute instances delete carlavm
+```
 
-## client side
-use --host <gcp_instance> --port 8000 params
+## remote via NoMachine
+```
+host: localhost port 4000
+```
