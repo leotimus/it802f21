@@ -14,6 +14,7 @@ rm no*.deb
 sudo apt install ubuntu-drivers-common -y
 sudo ubuntu-drivers autoinstall
 
+sudo apt install -y ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal xfce4 xterm
 export DEBIAN_FRONTEND=noninteractive
 DEBIAN_FRONTEND=noninteractive sudo apt install -y lubuntu-desktop
 
