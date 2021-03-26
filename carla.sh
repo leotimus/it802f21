@@ -1,22 +1,47 @@
 #!/bin/bash
+
 sudo apt update && sudo apt upgrade -y
+#https://cloud.google.com/compute/docs/disks/add-persistent-disk
+mkdir carla
+sudo mount -o discard,defaults /dev/sdb /home/$USER/carla
+sudo chmod a+w carla/
 
-sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io -y
-sudo groupadd docker
-sudo usermod -aG docker $USER
-
-sudo systemctl --now enable docker
-
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-curl -s -L https://nvidia.github.io/nvidia-container-runtime/experimental/$distribution/nvidia-container-runtime.list | sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
-sudo apt update && sudo apt install -y nvidia-docker2
-sudo systemctl restart docker
+cd ~
+wget https://download.nomachine.com/download/7.3/Linux/nomachine_7.3.2_1_amd64.deb
+sudo dpkg -i no*.deb
+rm no*.deb
 
 sudo apt install ubuntu-drivers-common -y
 sudo ubuntu-drivers autoinstall
+
+export DEBIAN_FRONTEND=noninteractive
+DEBIAN_FRONTEND=noninteractive sudo apt install -y lubuntu-desktop
+
+echo "PATH=\$PATH:\$HOME/carla/miniconda/bin" >> ~/.bash_profile
+source ~/.bash_profile
+conda init bash
+source ~/.bashrc
+
+mkdir carla
+sudo mount -o discard,defaults /dev/sdb /home/$USER/carla
+sudo chmod a+w carla/
+
+sudo apt install ubuntu-drivers-common -y
+sudo ubuntu-drivers autoinstall
+
+export DEBIAN_FRONTEND=noninteractive
+DEBIAN_FRONTEND=noninteractive sudo apt install -y lubuntu-desktop
+
+cd ~
+wget https://download.nomachine.com/download/7.3/Linux/nomachine_7.3.2_1_amd64.deb
+sudo dpkg -i no*.deb
+rm no*.deb
+
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+bash ~/miniconda.sh -b -p $HOME/carla/miniconda
+echo "PATH=\$PATH:\$HOME/carla/miniconda/bin" >> ~/.bash_profile
+source ~/.bash_profile
+conda init bash
+source ~/.bashrc
 
 sudo reboot
