@@ -27,7 +27,7 @@ sudo curl https://raw.githubusercontent.com/leotimus/it802f21/carla_01/carla.sh 
 ```
 _it will take about 10 minutes for each setup_
 
-## create carla instance
+## access carla instance
 login again
 ```
 gcloud compute ssh carlavm -- -L 4000:localhost:4000
@@ -36,7 +36,11 @@ mount disk before use
 ```
 sudo mount -o discard,defaults /dev/sdb /home/$USER/carla
 ```
-
+always activate `carla` pyton profile
+```
+conda activate carla
+```
+working dir is $HOME/carla
 ## delete gcp isntance after use
 ```
 gcloud compute instances delete carlavm
@@ -44,5 +48,5 @@ gcloud compute instances delete carlavm
 
 ## remote via NoMachine
 ```
-host: localhost port 4000
+host: localhost port 4000 or VM's external ip with port opened firewall rule
 ```
