@@ -22,26 +22,4 @@ source ~/.bash_profile
 conda init bash
 source ~/.bashrc
 
-mkdir carla
-sudo mount -o discard,defaults /dev/sdb /home/$USER/carla
-sudo chmod a+w carla/
-
-sudo apt install ubuntu-drivers-common -y
-sudo ubuntu-drivers autoinstall
-
-export DEBIAN_FRONTEND=noninteractive
-DEBIAN_FRONTEND=noninteractive sudo apt install -y lubuntu-desktop
-
-cd ~
-wget https://download.nomachine.com/download/7.3/Linux/nomachine_7.3.2_1_amd64.deb
-sudo dpkg -i no*.deb
-rm no*.deb
-
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-bash ~/miniconda.sh -b -p $HOME/carla/miniconda
-echo "PATH=\$PATH:\$HOME/carla/miniconda/bin" >> ~/.bash_profile
-source ~/.bash_profile
-conda init bash
-source ~/.bashrc
-
 sudo reboot
